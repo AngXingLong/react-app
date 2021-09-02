@@ -8,7 +8,7 @@ import AntColumnChart from './chart/AntColumnChart';
 import AntLineChart from './chart/AntLineChart';
 import VerticalBar from './chart/VerticalBar';
 import "antd/dist/antd.css";
-import "./styles/css/antd.css";
+
 import {Button, Nav, Navbar, NavDropdown, FormControl, Form, Container, Row, Table} from 'react-bootstrap';
 
 

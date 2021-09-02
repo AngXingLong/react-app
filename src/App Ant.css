@@ -1,0 +1,17 @@
+
+.wrapper{
+  padding:30px;
+}
+
+.table-striped-rows th{
+  background-color: red;
+  color:#fff;
+}
+
+
+.logo {
+  margin-right:20px;
+  float: left;
+  font-weight: bold;
+  font-size:large;
+}
