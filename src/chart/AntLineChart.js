@@ -45,9 +45,8 @@ class AntLineChart extends Component {
   asyncFetch = () => {
 
 
-    axios.get("https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json").then(response => { 
+    axios.get("https://gw.alipayobjects.com/os/bmw-prod/1d565782-dde4-4bb6-8946-ea6a38ccf184.json",{withCredentials: false}).then(response => { 
         this.setState({ config: { ...this.state.config, data: response.data} })
-        
     });
 
     /*

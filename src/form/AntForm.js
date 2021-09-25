@@ -13,7 +13,8 @@ import {
   Switch,
   Alert,
   Checkbox,
-  Select
+  Select,
+  Rate
 } from 'antd';
 
 import { render } from '@testing-library/react';
@@ -35,7 +36,6 @@ class AntForm extends Component {
     axios.post("http://localhost:5000/user", values
     ).then(response => { 
         console.log(response.data);
-
         this.setState({popup: <Alert  
           message="Register Success"
           type="success"
@@ -56,80 +56,73 @@ class AntForm extends Component {
     
     return (
       <div>
-      <h1>Register</h1>
+      <h1>Ant Form Example</h1>
       <br></br>
+
       {this.state.popup}
+
       <Form 
-      
+        layout="vertical" //vertical or horizontal
         name="basic"
-        labelCol={{
-          span: 0,
-        }}
-        wrapperCol={{
-          span: 8,
-        }}
-        initialValues={{
-          remember: true,
-        }}
+        labelCol={{ span: 2 }}
+        wrapperCol={{ span: 14 }}
+        initialValues={{remember: true}}
         onFinish={this.onFinish}                    
         onFinishFailed={this.onFinishFailed}
       >
 
         <Form.Item
-          name="userType"
-          label="User Type"
-          >
-          <Select defaultValue="admin" >
-          <Option value="admin">Admin</Option>
-          <Option value="vistor">Vistor</Option>
-          <Option value="disabled" disabled>                                  
-            Disabled
-          </Option>
-        </Select>
-        </Form.Item>
-
-        <Form.Item
-          label="Username"
-          name="username"
+          label="Text Field"
+          name="text"
           rules={[
             {
               required: true,
-              message: 'Please input your username!',
+              message: 'Your required message goes here',
             },
           ]}
         >
           <Input />
-        </Form.Item>                                                          
-  
+        </Form.Item>      
+
         <Form.Item
-          label="Password"
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your password!',
-            },
-          ]}
-        >
-          <Input.Password />
+          name="dropDown"
+          label="Drop Down Field"
+          >
+          <Select defaultValue="Option 1" >
+            <Option value="Option 1">Option 1</Option>
+            <Option value="Option 2">Option 2</Option>
+            <Option value="Option 3" disabled>Option 3</Option>
+          </Select>
         </Form.Item>
-  
+
+        <Form.Item label="DatePicker">
+          <DatePicker />
+        </Form.Item>
+
+        <Form.Item name="number" label="Number Field" rules={[{ type: 'number', min: 0, max: 99 }]}>
+          <InputNumber />
+        </Form.Item>
+
         <Form.Item
-          name="remember"
+          name="rating"
+          label="Rating"
+        >
+          <Rate />
+        </Form.Item>
+
+        <Form.Item
+          name="checkBox"
           valuePropName="checked"
-          wrapperCol={{
-            offset: 0,
-            span: 16,
-          }}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>Check Box Field</Checkbox>
         </Form.Item>
-  
+
         <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>
+
       </Form>
       </div>
     );

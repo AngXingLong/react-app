@@ -2,16 +2,24 @@ import React, { Component } from 'react'
 import axios from "axios";
 import { Table, Tag, Space } from 'antd';
 import {
-  BrowserRouter as Router,
+  Form,
+  Input,
+  Button,
+  Radio,
+  Cascader,
+  DatePicker,
+  InputNumber,
+  TreeSelect,
   Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import { Form, Input, Button, Checkbox } from 'antd';
-import { Row, Col,Alert, Affix} from 'antd';
-import { render } from '@testing-library/react';
+  Alert,
+  Checkbox,
+  Select,
+  Rate
+} from 'antd';
 
-class AntForm extends Component {
+import { render } from '@testing-library/react';
+const { Option } = Select;
+class Login extends Component {
      
   constructor(props) {
        super(props) 
@@ -25,12 +33,11 @@ class AntForm extends Component {
    onFinish = (values) => {
     console.log('Success:', values);
   
-    axios.post("http://localhost:5000/user", values
+    axios.post("http://localhost:8080/user", values
     ).then(response => { 
         console.log(response.data);
-
         this.setState({popup: <Alert  
-          message="Success Tips"
+          message="Register Success"
           type="success"
           showIcon
           closable
@@ -49,64 +56,48 @@ class AntForm extends Component {
     
     return (
       <div>
+      <h1>Login</h1>
+      <br></br>
+
       {this.state.popup}
+
       <Form 
+        layout="vertical" //vertical or horizontal
         name="basic"
-        labelCol={{
-          span: 0,
-        }}
-        wrapperCol={{
-          span: 8,
-        }}
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={this.onFinish}
+        labelCol={{ span: 2 }}
+        wrapperCol={{ span: 14 }}
+        initialValues={{remember: true}}
+        onFinish={this.onFinish}                    
         onFinishFailed={this.onFinishFailed}
       >
+
         <Form.Item
-          label="Username"
-          name="username"
+          label="User name"
+          name="text"
           rules={[
             {
               required: true,
-              message: 'Please input your username!',
             },
           ]}
         >
           <Input />
-        </Form.Item>
-  
+        </Form.Item>   
+
         <Form.Item
           label="Password"
           name="password"
           rules={[
             {
               required: true,
-              message: 'Please input your password!',
+              message: 'Your required message goes here',
             },
           ]}
         >
-          <Input.Password />
-        </Form.Item>
-  
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 0,
-            span: 16,
-          }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-  
-        <Form.Item
-          wrapperCol={{
-            offset: 0,
-            span: 16,
-          }}
-        >
+          <Input.Password  />
+        </Form.Item>  
+        
+
+        <Form.Item>
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
@@ -117,4 +108,4 @@ class AntForm extends Component {
   }
 }
 
-export default AntForm;
+export default Login;

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import axios from "axios";
-import { Table, Input, Tag, Space, Button} from 'antd';
+import { Table, Input, Tag, Space } from 'antd';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from "react-router-dom";
+
 
 const { Search } = Input;
 class AntTable extends Component {
@@ -49,40 +50,12 @@ class AntTable extends Component {
   }
 
   
-  login(){                
-
-    axios.defaults.withCredentials = true;
-
-    const params = new URLSearchParams();
-    params.append('username', 'admin');
-    params.append('password', 'admin');
-
-    axios.post(`http://localhost:8080/login`, params)
-    .then(response => {
-      console.log(response.data);
-    } );
-  
-    
-  }
-  
-  getResult(){
-
-    axios.defaults.withCredentials = true;
-  
-
-    axios.get(`http://localhost:8080/admin`).then(response => {
-      console.log(response.data);
-    });
-    
-  }
 
 
   render() {
    return (
         <div>
           <h1>Table Example</h1>
-          <Button onClick={this.login}>Login </Button>
-          <Button onClick={this.getResult}>Get Result </Button>
           <Search placeholder="input search text"  onSearch={this.onSearch} style={{ width: 200 }} />
           <Table columns={this.state.columns} dataSource={this.state.data}  pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30']}}/>
         </div>
