@@ -49,21 +49,6 @@ class AntTable extends Component {
   }
 
   
-  login(){                
-
-    axios.defaults.withCredentials = true;
-
-    const params = new URLSearchParams();
-    params.append('username', 'admin');
-    params.append('password', 'admin');
-
-    axios.post(`http://localhost:8080/login`, params)
-    .then(response => {
-      console.log(response.data);
-    } );
-  
-    
-  }
   
   getResult(){
 
@@ -81,8 +66,6 @@ class AntTable extends Component {
    return (
         <div>
           <h1>Table Example</h1>
-          <Button onClick={this.login}>Login </Button>
-          <Button onClick={this.getResult}>Get Result </Button>
           <Search placeholder="input search text"  onSearch={this.onSearch} style={{ width: 200 }} />
           <Table columns={this.state.columns} dataSource={this.state.data}  pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['10', '20', '30']}}/>
         </div>

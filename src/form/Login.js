@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import axios from "axios";
 import { Table, Tag, Space } from 'antd';
 import {
@@ -14,52 +14,67 @@ import {
   Alert,
   Checkbox,
   Select,
-  Rate
+  Rate,
+  Modal
 } from 'antd';
 
 import { render } from '@testing-library/react';
-const { Option } = Select;
-class Login extends Component {
+import {useSelector, useDispatch} from 'react-redux';
+import { valuesOfKey } from '@antv/util';
+import  { Redirect } from 'react-router-dom'
+
+
+function Login(){
      
-  constructor(props) {
-       super(props) 
-       this.state = {
-        visible: false,
-        value: ''
-      };
-  
-   }
+  const user = useSelector (state => state.user);
+  const dispatch = useDispatch();
+ const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-   onFinish = (values) => {
-    console.log('Success:', values);
-  
-    axios.post("http://localhost:8080/user", values
-    ).then(response => { 
-        console.log(response.data);
-        this.setState({popup: <Alert  
-          message="Register Success"
-          type="success"
-          showIcon
-          closable
-        />})
-    });
+    function onFinish(values) {
+
+        const params = new URLSearchParams();
+        params.append('username', values.username);
+        params.append('password', values.password);
+
+        axios.post("http://localhost:5000/login", params).then(response => { 
+            
+            if (typeof response.data !== 'string'){
+                dispatch({type:"setUser", data: response.data});
+                localStorage.setItem('user', JSON.stringify(response.data));
+                setIsLoggedIn(true);
+         
+            }
+            else{
+              Modal.error({
+                title: 'Error',
+                content: (
+                  <div>
+                    <p>Username or password is invalid </p>
+                  </div>
+                ),
+                onOk() {},
+              });
+            
+            }
+        });
+    };
+
     
-  };
+    function onFinishFailed(errorInfo) {
+      console.log('Failed:', errorInfo);
+    };
 
-  
-  onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
+    if (isLoggedIn) {
+      return <Redirect to = {{ pathname: "/" }} />;
+    }
 
-  render() {
-
-    
     return (
+      
       <div>
       <h1>Login</h1>
       <br></br>
+      
 
-      {this.state.popup}
 
       <Form 
         layout="vertical" //vertical or horizontal
@@ -67,13 +82,13 @@ class Login extends Component {
         labelCol={{ span: 2 }}
         wrapperCol={{ span: 14 }}
         initialValues={{remember: true}}
-        onFinish={this.onFinish}                    
-        onFinishFailed={this.onFinishFailed}
+        onFinish={onFinish}                    
+        onFinishFailed={onFinishFailed}
       >
 
         <Form.Item
           label="User name"
-          name="text"
+          name="username"
           rules={[
             {
               required: true,
@@ -105,7 +120,7 @@ class Login extends Component {
       </Form>
       </div>
     );
-  }
+  
 }
 
 export default Login;

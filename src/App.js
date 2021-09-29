@@ -1,6 +1,6 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {React,useState} from "react";
+import {React,useState, useEffect} from "react";
 import logo from './logo.svg';
 import './App.css';
 
@@ -26,64 +26,30 @@ import Login from './form/Login';
 import axios from 'axios';
 import {createStore} from 'redux';
 import {useSelector, useDispatch} from 'react-redux';
+import { Modal } from 'antd';
 
 function App() {
 
-
   axios.defaults.withCredentials = true;
-  const appBaseUrl = "http://localhost:8080"
   const [isAuth, setIsAuth] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
-  
-  
-  //const user = useSelector (state => state.user);
+  const user = useSelector (state => state.user);
   const dispatch = useDispatch();
-  //const store = createStore(uReducer);
-
-
-
-  const increment = () => {
-    return {
-      type :'INCREMENT'
-    }                                               
-  }
-
-  const decrement = () => {
-    return {
-      type :'DECREMENT'
-    }                                               
-  }
-
-  function login(){  
-    dispatch(increment());              
-
-   // store.dispatch(increment());
-
-    /*
-    const params = new URLSearchParams();
-    params.append('username', 'admin');
-    params.append('password', 'admin');
-
-   
-    axios.post(`http://localhost:8080/login`, params)
-    .then(response => {
-    
-      //uStore.dispatch({type: 1,data: response.data});
-    
-      
-    } );
-    */
-  }
 
   function logout(){                
-
-    axios.post(`${appBaseUrl}/logout`).then(response => {
-      setUserDetails(response.data);
+    axios.post(`http://localhost:5000/logout`).then(response => {
+      console.log("asdas")
+      dispatch({type: "setUser", data:{}}); 
+      localStorage.removeItem("user");
     });
-
   }
 
-
+  useEffect(() => {
+    let userStorage = JSON.parse(localStorage.getItem('user'));
+    
+    if(userStorage){  
+      dispatch({type: "setUser", data:userStorage}); 
+    }
+  },[]);
 
   return (
     <Router>
@@ -107,19 +73,15 @@ function App() {
             <Nav.Link><Link to="/authtest">authtest</Link></Nav.Link>
           </Nav>
          
-            {isAuth ? (
-              <div><Button onClick={login}>Logout </Button></div>
+            {'userName' in user ? (
+              <div>Welcome {user.userName} <Button onClick={logout}>Logout</Button></div>
             ) : (
-              <Button variant="outline-success" onClick={login}>Login</Button>
-              //<Link to="/Login"><Button variant="outline-success">Login</Button></Link>
+              <Link to="/Login"><Button variant="outline-success">Login</Button></Link>
             )}
 
-
-            
-          
+                                              
         </Navbar.Collapse>
       </Navbar>
-
         <div className="wrapper" fluid>
         <Switch>
           <Route exact path="/">
