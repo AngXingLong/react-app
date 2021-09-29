@@ -8,10 +8,10 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 
-function Authtest(){
+function ProtectedRouteTest(){
 
     return <div>test</div>;
     
 }
 
-export default withRouter(Authtest);
+export default withRouter(ProtectedRouteTest);

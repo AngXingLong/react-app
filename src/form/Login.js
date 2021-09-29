@@ -1,34 +1,13 @@
-import React, { Component, useState } from 'react'
+import React from 'react'
 import axios from "axios";
-import { Table, Tag, Space } from 'antd';
-import {
-  Form,
-  Input,
-  Button,
-  Radio,
-  Cascader,
-  DatePicker,
-  InputNumber,
-  TreeSelect,
-  Switch,
-  Alert,
-  Checkbox,
-  Select,
-  Rate,
-  Modal
-} from 'antd';
-
-import { render } from '@testing-library/react';
+import {Form,Input,Button,Modal} from 'antd';
 import {useSelector, useDispatch} from 'react-redux';
-import { valuesOfKey } from '@antv/util';
 import  { Redirect } from 'react-router-dom'
-
 
 function Login(){
      
-  const user = useSelector (state => state.user);
-  const dispatch = useDispatch();
- const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const user = useSelector (state => state.user);
+    const dispatch = useDispatch();
 
     function onFinish(values) {
 
@@ -39,10 +18,8 @@ function Login(){
         axios.post("http://localhost:5000/login", params).then(response => { 
             
             if (typeof response.data !== 'string'){
-                dispatch({type:"setUser", data: response.data});
+                dispatch({type:"setUserLogin", data: response.data});
                 localStorage.setItem('user', JSON.stringify(response.data));
-                setIsLoggedIn(true);
-         
             }
             else{
               Modal.error({
@@ -54,17 +31,16 @@ function Login(){
                 ),
                 onOk() {},
               });
-            
             }
         });
     };
 
     
     function onFinishFailed(errorInfo) {
-      console.log('Failed:', errorInfo);
+        console.log('Failed:', errorInfo);
     };
 
-    if (isLoggedIn) {
+    if (user.isAuth) {
       return <Redirect to = {{ pathname: "/" }} />;
     }
 
@@ -73,9 +49,6 @@ function Login(){
       <div>
       <h1>Login</h1>
       <br></br>
-      
-
-
       <Form 
         layout="vertical" //vertical or horizontal
         name="basic"
